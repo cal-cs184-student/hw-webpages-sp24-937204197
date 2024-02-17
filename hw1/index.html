@@ -54,11 +54,11 @@
 <h3 align="middle">Part 2: Antialiasing triangles</h3>
   <p>
     I dynamically resized sample_buffer to width*height*sample_rate to store all the sampling points. For each pixel, (x, y) inside the bounding box of the triangle, 
-    I equally sampled sample_rate number of points and fill the corresponding block in sample_buffer with the color of the triangle if the sample point is inside the triangle.
-    Lastly, I average out the color of every sample_rate number of samples and store the average color into the frame_buffer. The resulting color should fill one pixel. 
-    In the process, instead of sampling once for each pixel, I drew multiple samples for each pixel as if sampling with hiher frequency rate. 
-    Then I down sample the image by averaging out colors within each pixel. Supersampling is useful in antialising as it averages out area with high frequency, 
-    and so making the image looks smoother.
+    I equally sampled the sample_rate number of points and filled the corresponding block in sample_buffer with the color of the triangle if the sample point is inside the triangle.
+    Lastly, I average out the color of every sample_rate number of samples and store the average color in the frame_buffer. The resulting color should fill one pixel. 
+    In the process, instead of sampling once for each pixel, I drew multiple samples for each pixel as if sampling with higher frequency rate. 
+    Then I down-sample the image by averaging out colors within each pixel. Supersampling is useful in antialiasing as it averages out area with high frequency, 
+    and so making the image look smoother.
   </p>
   <div align="middle">
     <table style="width=100%">
@@ -80,8 +80,8 @@
     </table>
   </div>
   <p>
-    As showen above, higher sample rate makes the edge of triangle looks blur. This is the case because the edges partially overlaps the pixel, and the darkness of the pixel is porpotional 
-    to the overlaping area. This is the result of averaging colors in multiple samples within one pixel.
+    As shown above, a higher sample rate makes the edge of the triangle look blur. This is the case because the edges partially overlap the pixel, and the darkness of the pixel is proportional 
+    to the overlapping area. This is the result of averaging colors in multiple samples within one pixel.
   </p>
 
 
@@ -106,8 +106,8 @@
 
 <p>
   For each sample point, (x, y), I map the sample point from world space to texture space by calculating the relative position in barycentric coordinates. For each sample,
-  if the sampling method is nearest, I just floor the u and v and directly retrive the texture pixel at that point. If the samling method is bilinear, then I retrive the four nearest
-  texture pixel and average the color. Below pictures show the two methods in different sampling reate:
+  if the sampling method is nearest, I just floor the u and v and directly retrieve the texture pixel at that point. If the sampling method is bilinear, then I retrieve the four nearest
+  texture pixels and average the color. The below pictures show the two methods with different sampling rates:
 </p>
 
 <div align="middle">
@@ -139,20 +139,20 @@
 <p>
   
 
-  For sample rate at 1, the image with nearest method is more granular while the image with bilinear method is more blur. For sample rate at 16, there is no obvious difference(minor difference in some pixels). 
+  For sample rate at 1, the image with the nearest method is more granular while the image with the bilinear method is more blurred. For the sample rate at 16, there is no obvious difference(minor difference in some pixels). 
   In general, there will be a large difference between the two methods when the sampling rate is low and the image frequency is high.
 </p>
 
 <h3 align="middle">Part 6: "Level sampling" with mipmaps for texture mapping</h3>
 
 <p>
-  Level mapping is the process of mapping texture into world space with different resultion. To implement, I first Computer
-  the mipmap level D using the same method as in lecture. Then depending on the LevelSampleMethod, I retrive the color from the approate level
+  Level mapping is the process of mapping texture into world space with different resolutions. To implement, I first Computer
+  the mipmap level D using the same method as in the lecture. Then depending on the LevelSampleMethod, I retrieve the color from the appropriate level
   of the mipmap and use this color to fill the corresponding sample buffer.
   <br><br>
-  For zeroth and nearest method, the time and space complexity is lower than that of the linear method because linear method needs to read more 
-  pixles and do more operations. However, because the linear method averages out texture pixels, it has a better antialising effect.
-  The pictures below demenstrate the difference.
+  For the zeroth and nearest method, the time and space complexity is lower than that of the linear method because the linear method needs to read more 
+  pixels and do more operations. However, because the linear method averages out texture pixels, it has a better antialiasing effect.
+  The pictures below demonstrate the difference.
 </p>
 
 <div align="middle">
