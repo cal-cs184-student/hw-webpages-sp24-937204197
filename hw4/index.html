@@ -1,7 +1,236 @@
-<html>
-	<head>
-	</head>
-	<body>
-		Homework 4 index.html here
-	</body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style>
+  body {
+    padding: 100px;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    color: #121212;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+</style>
+<title>CS 184 Mesh Editor</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+</head>
+
+
+<body>
+
+<h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2024</h1>
+<h1 align="middle">Project 4: Cloth Simulator</h1>
+<h2 align="middle">YOUR Jiacheng Song</h2>
+<h2 align="middle">Website URL: <a href="https://cal-cs184-student.github.io/hw-webpages-sp24-937204197/hw4/index.html">Here!</a></h2>
+
+<br><br>
+
+<div>
+
+<h2 align="middle">Overview</h2>
+<p>In this assignment, I implemented a real-time simulation of cloth using a mass
+   and spring based system. I built the data structures to discretely represent 
+   the cloth, define and apply physical constraints on them, and apply numerical integration 
+   to simulate the way cloth moves over time. Finally, I implemented collisions with other 
+   objects as well as self-collisions to prevent cloth clipping.</p>
+
+<h2 align="middle">Part I: Masses and springs</h2>
+
+<h3>
+  The images below show what the wireframe looks like (1) without any shearing constraints, (2) with only shearing constraints, and (3) with all constraints.
+</h3>
+<div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+        <img src="images/task1-1.jpg" align="middle" width="400px"/>
+        <figcaption>without any shearing constraints</figcaption>
+      </td>
+      <td>
+        <img src="images/task1-2.jpg" align="middle" width="400px"/>
+        <figcaption>with only shearing constraints</figcaption>
+      </td>
+      <td>
+        <img src="images/task1-3.jpg" align="middle" width="400px"/>
+        <figcaption>with all constraints</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+<br>
+
+<h2 align="middle">Part II: Simulation via numerical integration</h2>
+<h3>
+  Experiment with some the parameters in the simulation. 
+</h3>
+<p>
+  For spring constant ks, the cloth takes shorter time to rest and looks stiff with high ks while with low ks, the cloth takes longer time to
+  rest and looks softer.
+</p>
+<table style="width:100%">
+  <tr align="center">
+    <td>
+      <img src="images/task2-1.jpg" align="middle" width="400px"/>
+      <figcaption>low ks at t = 40</figcaption>
+    </td>
+    <td>
+      <img src="images/task2-2.jpg" align="middle" width="400px"/>
+      <figcaption>high ks at t = 40</figcaption>
+    </td>
+  </tr>
+</table>
+
+<p>
+  For density, the cloth takes shorter time to rest and looks stiff with low density, while with high density, the cloth takes longer time to
+  rest and looks softer.
+</p>
+<table style="width:100%">
+  <tr align="center">
+    <td>
+      <img src="images/task2-3.jpg" align="middle" width="400px"/>
+      <figcaption>low density at t = 40</figcaption>
+    </td>
+    <td>
+      <img src="images/task2-4.jpg" align="middle" width="400px"/>
+      <figcaption>high density at t = 40</figcaption>
+    </td>
+  </tr>
+</table>
+
+<p>
+  For damping, the cloth takes comes to rest slowly without oscillating with high damping, while with low damping, the cloth
+  oscillates several times before coming to rest.
+</p>
+<table style="width:100%">
+  <tr align="center">
+    <td>
+      <img src="images/task2-5.jpg" align="middle" width="400px"/>
+      <figcaption>high damping at t = 40</figcaption>
+    </td>
+    <td>
+      <img src="images/task2-6.jpg" align="middle" width="400px"/>
+      <figcaption>low damping at some t</figcaption>
+    </td>
+  </tr>
+</table>
+<h3>
+  below is a screenshot of my shaded cloth from scene/pinned4.json in its final resting state.
+</h3>
+<table style="width:100%">
+  <tr align="center">
+    <td>
+      <img src="images/task2-7.jpg" align="middle" width="400px"/>
+      <figcaption>scene/pinned4.json at final state</figcaption>
+    </td>
+  </tr>
+</table>
+<br>
+
+<h2>
+  Part III: Handling collisions with other objects
+</h2>
+
+<h3>
+  Below shows screenshots of my shaded cloth from scene/sphere.json in its final resting 
+  state on the sphere using the default ks = 5000 as well as with ks = 500 and ks = 50000. 
+</h3>
+<p>
+  As showen below, the cloth looks stiff when k is high. When k gets lower, the cloth becomses softer and streches more due to gravity.
+</p>
+<div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+        <img src="images/task3-1.jpg" align="middle" width="400px"/>
+        <figcaption>k = 5000</figcaption>
+      </td>
+      <td>
+        <img src="images/task3-2.jpg" align="middle" width="400px"/>
+        <figcaption>k = 500</figcaption>
+      </td>
+      <td>
+        <img src="images/task3-3.jpg" align="middle" width="400px"/>
+        <figcaption>k = 50000</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h3>
+  Below shows a screenshot of my shaded cloth lying peacefully at rest on the plane. 
+</h3>
+<div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+        <img src="images/task3-4.jpg" align="middle" width="400px"/>
+        <figcaption>k = 5000</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h2>
+  Part IV: Handling self-collisions
+</h2>
+
+<h3>
+  Below shows screenshots that document how your cloth falls and folds on itself, 
+  starting with an early, initial self-collision and ending with the cloth at a more restful state
+</h3>
+
+<div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+        <img src="images/task4-1.jpg" align="middle" width="400px"/>
+        <figcaption>early</figcaption>
+      </td>
+      <td>
+        <img src="images/task4-2.jpg" align="middle" width="400px"/>
+        <figcaption>middle</figcaption>
+      </td>
+      <td>
+        <img src="images/task4-3.jpg" align="middle" width="400px"/>
+        <figcaption>ending</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h3>
+  Vary the density as well as ks and describe with words and screenshots how they affect the behavior of the cloth as it falls on itself.
+</h3>
+<p>
+  When density is large and ks is small, the cloth looks more wrinkled, and as it falls flat, it is undulating. In contrast, when 
+  the density is low and ks is high, the cloth looks stiff and it rests more peacefully after falling flat.
+</p>
+
+<h2>
+  Part V: Cloth Sim
+</h2>
+<h3>
+  Explain in your own words what is a shader program and how vertex and fragment shaders work together to create lighting and material effects.
+</h3>
+<p>
+  
+A shader program is a small program that runs on the GPU and is responsible for generating fragment shaders
+ or transforming vertex positions during the rendering process.
+ <br>
+ vertex shaders are responsible for transforming vertices, while fragment shaders determine the color of each pixel based
+on lighting models, material properties, and other factors, and together, they create the desired lighting and material effects
+</p>
+<h3>Explain the Blinn-Phong shading model in your own words. Show a screenshot of your Blinn-Phong shader outputting only the ambient component, a screen shot only outputting</h3>
+<p>
+  The Blinn-Phong shading model provides a more computationally efficient and visually appealing way to simulate lighting and shading
+   effects on 3D surfaces. By using the halfway vector, the Blinn-Phong model simplifies the computation of specular highlights while 
+   still producing visually appealing results. As a result, Blinn-Phong shading model balances between computational efficiency and visual quality.
+</p>
+
+</body>
 </html>
